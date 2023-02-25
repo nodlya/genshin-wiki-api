@@ -10,10 +10,16 @@ const CharacterController = {
             const characters = await ProfileCharacter.find({})
                 .populate({ path: 'weaponType', model: WeaponType })
                 .populate({ path: 'element', model: Element });
-            res.json({
-                data:characters
-            });
-            console.log(characters)
+            if(characters){
+                res.json({
+                    data:characters
+                });
+            }
+            else{
+                res.status(404).json({
+                    message: "characters doesn't found",
+                });
+            }
         }
         catch (ex){
             res.status(500).json({

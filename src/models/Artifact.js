@@ -11,5 +11,5 @@ const Artifact = new mongoose.Schema(
 );
 
 module.exports = {
-    artifact: mongoose.model('Artifacts', Artifact),
+    Artifact: mongoose.model('Artifacts', Artifact),
 }

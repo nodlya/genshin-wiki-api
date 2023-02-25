@@ -6,6 +6,7 @@
 const config = require('./src/config/config');
 const CharacterController = require("./src/controllers/CharacterController");
 const WeaponController = require("./src/controllers/WeaponController");
+const ArtifactController = require("./src/controllers/ArtifactController");
 
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -44,11 +45,12 @@ const initClient = () => {
 }
 const initRouters = () => {
     app.get('/',(req,res)=>{
-        console.log("hello world")
+        res.send('Hello it\' Genshin api');
     })
     app.get('/characters',CharacterController.getAllCharacters);
     app.get('/character/:characterId',CharacterController.getCharacterById);
     app.get('/weapons',WeaponController.getAllWeapon)
+    app.get('/artifacts',ArtifactController.getAllArtifacts)
 }
 
 const main = () => {
