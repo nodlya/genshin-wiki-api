@@ -14,7 +14,7 @@ const Character = new mongoose.Schema(
     }
 );
 const ProfileCharacter = new mongoose.Schema({
-        characterId: String,
+        character_id: String,
         image: String,
         name: String,
         countOfStars: Number,

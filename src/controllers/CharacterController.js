@@ -1,26 +1,48 @@
 const {Character,ProfileCharacter} = require('../models/Character');
 const mongoose = require('mongoose');
-const { BSONTypeError } = require('bson');
+const {WeaponType} = require("../models/Weapon");
+const {Element} = require("../models/Element");
+const {Ability} = require("../models/Ability");
 
 const CharacterController = {
     async getAllCharacters(req,res) {
         try{
-            const characters = await ProfileCharacter.find({});
+            const characters = await ProfileCharacter.find({})
+                .populate({ path: 'weaponType', model: WeaponType })
+                .populate({ path: 'element', model: Element });
             res.json({
                 data:characters
             });
+            console.log(characters)
         }
         catch (ex){
-            console.log(ex);
             res.status(500).json({
                 message: "aplication error",
             });
         }
     },
     async getCharacterById(req,res){
-        const characterId = req.params.characterId.trim()
         try{
-            const character = await Character.findOne({_id: mongoose.Types.ObjectId(characterId)});
+            const characterId = req.params.characterId.trim()
+            const character = await ProfileCharacter.findOne({_id: mongoose.Types.ObjectId(characterId)})
+                .populate({ path: 'weaponType', model: WeaponType })
+                .populate({ path: 'element', model: Element })
+                .populate({
+                    path: 'character_id',
+                    model: Character,
+                    populate: [
+                        {
+                            path: 'handAbility', model: Ability, transform:(doc)=>doc??""
+                        },
+                        {
+                            path: 'elementAbility', model: Ability, transform:(doc)=>doc??""
+                        },
+                        {
+                            path: 'burstAbility', model: Ability, transform:(doc)=>doc??""
+                        },
+                    ]
+                });
+
             if(character){
                 res.json({
                     data:character
@@ -33,6 +55,7 @@ const CharacterController = {
             }
         }
         catch (ex){
+
             if(ex.name.includes("BSONTypeError")){
                 res.status(500).json({
                     message: "incorrect size of characterId",

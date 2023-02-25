@@ -3,8 +3,9 @@
 //import config from './src/config/config';
 //import { express } from 'express';
 //import {cors} from 'cors';
-const config = require('./src/config/config')
-const CharacterController = require("./src/controllers/CharacterController")
+const config = require('./src/config/config');
+const CharacterController = require("./src/controllers/CharacterController");
+const WeaponController = require("./src/controllers/WeaponController");
 
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -46,7 +47,8 @@ const initRouters = () => {
         console.log("hello world")
     })
     app.get('/characters',CharacterController.getAllCharacters);
-    app.get('/character/:characterId',CharacterController.getCharacterById)
+    app.get('/character/:characterId',CharacterController.getCharacterById);
+    app.get('/weapons',WeaponController.getAllWeapon)
 }
 
 const main = () => {
