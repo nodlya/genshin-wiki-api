@@ -10,10 +10,10 @@ const endpointsFiles = [join(_dirname, '../../index.js')];
 const doc = {
     info: {
         title: 'Genshin Impact Api',
-        description: 'Api for our ',
+        description: 'Api for mobile wiki',
     },
     host: `localhost:${port}`,
-    schemes: ['http'],
+    schemes: ['http','https'],
 };
 
 swaggerAutogen(outputFile, endpointsFiles, doc).then(({ success }) => {

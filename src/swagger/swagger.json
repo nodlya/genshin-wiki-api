@@ -2,13 +2,14 @@
   "swagger": "2.0",
   "info": {
     "title": "Genshin Impact Api",
-    "description": "Api for our ",
+    "description": "Api for mobile wiki",
     "version": "1.0.0"
   },
   "host": "localhost:4002",
   "basePath": "/",
   "schemes": [
-    "http"
+    "http",
+    "https"
   ],
   "paths": {
     "/": {
