@@ -1,16 +1,14 @@
-//import * as schemas from './schemas.js';
-//import mongoose from 'mongoose';
-//import config from './src/config/config';
-//import { express } from 'express';
-//import {cors} from 'cors';
 const config = require('./src/config/config');
-const CharacterController = require("./src/controllers/CharacterController");
+const {getAllCharacters,getCharacterById} = require("./src/controllers/CharacterController");
+const {getCharacterValidator} = require("./src/validators/CharacterValidator");
 const WeaponController = require("./src/controllers/WeaponController");
 const ArtifactController = require("./src/controllers/ArtifactController");
+const swaggerUi = require('swagger-ui-express');
 
 const cors = require('cors');
 const mongoose = require('mongoose');
 const express = require('express');
+const swaggerDocument = require('./src/swagger/swagger.json');
 const app = express();
 const port = process.env.PORT || config.port;
 const db = `mongodb+srv://${config.dbUser.userName}:${config.dbUser.password}@cluster0.czj4pwj.mongodb.net/Genshin_wiki_database?retryWrites=true&w=majority`;
@@ -40,15 +38,15 @@ const initClient = () => {
             ],
         })
     );
-
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     app.listen(port,()=>{console.log(`server start on http://localhost:${port}`)})
 }
 const initRouters = () => {
     app.get('/',(req,res)=>{
         res.send('Hello it\' Genshin api');
     })
-    app.get('/characters',CharacterController.getAllCharacters);
-    app.get('/character/:characterId',CharacterController.getCharacterById);
+    app.get('/characters',getAllCharacters);
+    app.get('/characters/:characterId',getCharacterValidator(),getCharacterById);
     app.get('/weapons',WeaponController.getAllWeapon)
     app.get('/artifacts',ArtifactController.getAllArtifacts)
 }

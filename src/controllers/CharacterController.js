@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const {WeaponType} = require("../models/Weapon");
 const {Element} = require("../models/Element");
 const {Ability} = require("../models/Ability");
+const {validationResult} = require("express-validator");
 
 const CharacterController = {
     async getAllCharacters(req,res) {
@@ -29,6 +30,12 @@ const CharacterController = {
     },
     async getCharacterById(req,res){
         try{
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                const error = errors.array()[0]
+                return res.status(400).json({msg:error.msg,id:error.value})
+            }
+
             const characterId = req.params.characterId.trim()
             const character = await ProfileCharacter.findOne({_id: mongoose.Types.ObjectId(characterId)})
                 .populate({ path: 'weaponType', model: WeaponType })
