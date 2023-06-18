@@ -4,6 +4,8 @@ const {getCharacterValidator} = require("./src/validators/CharacterValidator");
 const WeaponController = require("./src/controllers/WeaponController");
 const ArtifactController = require("./src/controllers/ArtifactController");
 const swaggerUi = require('swagger-ui-express');
+const generateSwagger = require("./src/swagger/swagger.js");
+const readFile = require("fs").readFileSync;
 
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -38,7 +40,12 @@ const initClient = () => {
             ],
         })
     );
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    //app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    generateSwagger().then(async () => {
+        const swaggerDoc = JSON.parse(readFile('./src/swagger/swagger.json', "utf8"));
+        app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+    })
+
     app.listen(port,()=>{console.log(`server start on http://localhost:${port}`)})
 }
 const initRouters = () => {
