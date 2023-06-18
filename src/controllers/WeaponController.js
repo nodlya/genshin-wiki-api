@@ -1,6 +1,5 @@
 const {Weapon, WeaponType} = require('../models/Weapon');
 const {validationResult} = require("express-validator");
-const {ProfileCharacter} = require("../models/Character");
 const mongoose = require("mongoose");
 
 const WeaponController = {

@@ -1,8 +1,9 @@
 const config = require('./src/config/config');
 const {getAllCharacters, getCharacterById} = require("./src/controllers/CharacterController");
-const {idValidator} = require("./src/validators/DataValidator");
+const {idValidator, dayValidator} = require("./src/validators/DataValidator");
 const {getAllWeapon, getWeaponById} = require("./src/controllers/WeaponController");
 const {getAllArtifacts, getArtifactById} = require("./src/controllers/ArtifactController");
+const {getDungeonResourcesByDay} = require("./src/controllers/DungeonResourceController");
 const swaggerUi = require('swagger-ui-express');
 const generateSwagger = require("./src/swagger/swagger.js");
 const readFile = require("fs").readFileSync;
@@ -56,9 +57,10 @@ const initRouters = () => {
     app.get('/characters', getAllCharacters);
     app.get('/character/:characterId', idValidator("characterId"), getCharacterById);
     app.get('/weapons', getAllWeapon);
-    app.get('/weapon/:weaponId', idValidator("weaponId"),getWeaponById);
+    app.get('/weapon/:weaponId', idValidator("weaponId"), getWeaponById);
     app.get('/artifacts', getAllArtifacts);
-    app.get('/artifact/:artifactId', idValidator("artifactId"),getArtifactById);
+    app.get('/artifact/:artifactId', idValidator("artifactId"), getArtifactById);
+    app.get('/dungeonResource/:dayOfWeek', dayValidator(), getDungeonResourcesByDay);
 }
 
 const main = () => {

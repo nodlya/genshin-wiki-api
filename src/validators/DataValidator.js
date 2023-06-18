@@ -10,5 +10,14 @@ const DataValidator = {
             })
             .withMessage('id must be at 24 character');
     },
+    dayValidator(){
+        return param("dayOfWeek")
+            .exists()
+            .isLength({
+                min:3,
+                max:3
+            })
+            .withMessage('use short name of day');
+    }
 }
 module.exports = DataValidator
