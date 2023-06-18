@@ -1,6 +1,6 @@
 const config = require('./src/config/config');
-const {getAllCharacters,getCharacterById} = require("./src/controllers/CharacterController");
-const {getCharacterValidator} = require("./src/validators/CharacterValidator");
+const { getAllCharacters, getCharacterById } = require("./src/controllers/CharacterController");
+const { getCharacterValidator } = require("./src/validators/CharacterValidator");
 const WeaponController = require("./src/controllers/WeaponController");
 const ArtifactController = require("./src/controllers/ArtifactController");
 const swaggerUi = require('swagger-ui-express');
@@ -19,11 +19,11 @@ const initDb = () => {
     mongoose.set('strictQuery', true);
     mongoose
         .connect(db)
-        .then(()=>{
+        .then(() => {
             console.log("database ok")
         })
-        .catch(e=>{
-            console.log("database err\n",e)
+        .catch(e => {
+            console.log("database err\n", e)
         })
 }
 const initClient = () => {
@@ -41,21 +41,25 @@ const initClient = () => {
         })
     );
     //app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-    generateSwagger().then(async () => {
-        const swaggerDoc = JSON.parse(readFile('./src/swagger/swagger.json', "utf8"));
-        app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
-    })
 
-    app.listen(port,()=>{console.log(`server start on http://localhost:${port}`)})
+    app.listen(port, () => { console.log(`server started`) })
+
 }
 const initRouters = () => {
-    app.get('/',(req,res)=>{
+
+    app.get('/', (req, res) => {
+        console.log(req)
         res.send('Hello it\' Genshin api');
+        generateSwagger(req).then(async () => {
+            const swaggerDoc = JSON.parse(readFile('./src/swagger/swagger.json', "utf8"));
+            app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+
+        })
     })
-    app.get('/characters',getAllCharacters);
-    app.get('/characters/:characterId',getCharacterValidator(),getCharacterById);
-    app.get('/weapons',WeaponController.getAllWeapon)
-    app.get('/artifacts',ArtifactController.getAllArtifacts)
+    app.get('/characters', getAllCharacters);
+    app.get('/characters/:characterId', getCharacterValidator(), getCharacterById);
+    app.get('/weapons', WeaponController.getAllWeapon)
+    app.get('/artifacts', ArtifactController.getAllArtifacts)
 }
 
 const main = () => {
