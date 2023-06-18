@@ -1,8 +1,8 @@
 const config = require('./src/config/config');
-const { getAllCharacters, getCharacterById } = require("./src/controllers/CharacterController");
-const { getCharacterValidator } = require("./src/validators/CharacterValidator");
-const WeaponController = require("./src/controllers/WeaponController");
-const ArtifactController = require("./src/controllers/ArtifactController");
+const {getAllCharacters, getCharacterById} = require("./src/controllers/CharacterController");
+const {idValidator} = require("./src/validators/DataValidator");
+const {getAllWeapon, getWeaponById} = require("./src/controllers/WeaponController");
+const {getAllArtifacts, getArtifactById} = require("./src/controllers/ArtifactController");
 const swaggerUi = require('swagger-ui-express');
 const generateSwagger = require("./src/swagger/swagger.js");
 const readFile = require("fs").readFileSync;
@@ -20,6 +20,7 @@ const initDb = () => {
         .connect(db)
         .then(() => {
             console.log("database ok")
+            /*console.log(db)*/
         })
         .catch(e => {
             console.log("database err\n", e)
@@ -40,7 +41,9 @@ const initClient = () => {
             ],
         })
     );
-    app.listen(port, () => { console.log(`server started on`) })
+    app.listen(port, () => {
+        console.log(`server started on http://localhost:${port}`)
+    })
 }
 const initRouters = () => {
     app.get('/', (req, res) => {
@@ -51,9 +54,11 @@ const initRouters = () => {
         })
     })
     app.get('/characters', getAllCharacters);
-    app.get('/characters/:characterId', getCharacterValidator(), getCharacterById);
-    app.get('/weapons', WeaponController.getAllWeapon)
-    app.get('/artifacts', ArtifactController.getAllArtifacts)
+    app.get('/character/:characterId', idValidator("characterId"), getCharacterById);
+    app.get('/weapons', getAllWeapon);
+    app.get('/weapon/:weaponId', idValidator("weaponId"),getWeaponById);
+    app.get('/artifacts', getAllArtifacts);
+    app.get('/artifact/:artifactId', idValidator("artifactId"),getArtifactById);
 }
 
 const main = () => {

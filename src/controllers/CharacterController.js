@@ -10,7 +10,23 @@ const CharacterController = {
         try{
             const characters = await ProfileCharacter.find({})
                 .populate({ path: 'weaponType', model: WeaponType })
-                .populate({ path: 'element', model: Element });
+                .populate({ path: 'element', model: Element })
+                .populate({
+                    path: 'character_id',
+                    model: Character,
+                    populate: [
+                        {
+                            path: 'handAbility', model: Ability, transform:(doc)=>doc??null
+                        },
+                        {
+                            path: 'elementAbility', model: Ability, transform:(doc)=>doc??null
+                        },
+                        {
+                            path: 'burstAbility', model: Ability, transform:(doc)=>doc??null
+                        },
+                    ]
+                })
+            ;
             if(characters){
                 res.json({
                     data:characters

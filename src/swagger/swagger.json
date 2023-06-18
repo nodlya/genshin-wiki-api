@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Genshin Impact Api2",
+    "title": "Genshin Impact Api",
     "description": "Api for mobile wiki",
     "version": "1.0.0"
   },
@@ -40,7 +40,7 @@
         }
       }
     },
-    "/characters/{characterId}": {
+    "/character/{characterId}": {
       "get": {
         "description": "",
         "parameters": [
@@ -81,6 +81,33 @@
         }
       }
     },
+    "/weapon/{weaponId}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "weaponId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/artifacts": {
       "get": {
         "description": "",
@@ -88,6 +115,30 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/artifact/{artifactId}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "artifactId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "404": {
             "description": "Not Found"

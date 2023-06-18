@@ -1,14 +1,14 @@
 const {param} = require("express-validator");
 
-const CharacterValidator = {
-    getCharacterValidator(){
-        return param("characterId")
+const DataValidator = {
+    idValidator(name){
+        return param(name)
             .exists()
             .isLength({
                 min:24,
                 max:24
             })
             .withMessage('id must be at 24 character');
-    }
+    },
 }
-module.exports = CharacterValidator
+module.exports = DataValidator
