@@ -1,20 +1,17 @@
 const swaggerAutogen = require('swagger-autogen')();
 const { join, dirname } = require('path');
-const config = require('../config/config');
 
-function generateSwagger(req) {
-    const port = process.env.PORT || config.port;
-
+function generateSwagger(url) {
     const _dirname = dirname(require.main.filename)
     const outputFile = join(_dirname, './src/swagger/swagger.json');
     const endpointsFiles = [join(_dirname, 'index.js')];
 
     const doc = {
         info: {
-            title: 'Genshin Impact Api2',
+            title: 'Genshin Impact Api',
             description: 'Api for mobile wiki',
         },
-        host: req.get('host'),
+        host: url,
         schemes: ['http', 'https'],
     };
 

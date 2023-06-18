@@ -10,7 +10,6 @@ const readFile = require("fs").readFileSync;
 const cors = require('cors');
 const mongoose = require('mongoose');
 const express = require('express');
-const swaggerDocument = require('./src/swagger/swagger.json');
 const app = express();
 const port = process.env.PORT || config.port;
 const db = `mongodb+srv://${config.dbUser.userName}:${config.dbUser.password}@cluster0.czj4pwj.mongodb.net/Genshin_wiki_database?retryWrites=true&w=majority`;
@@ -27,6 +26,7 @@ const initDb = () => {
         })
 }
 const initClient = () => {
+
     app.use(express.json());
     app.use(
         cors({
@@ -40,20 +40,14 @@ const initClient = () => {
             ],
         })
     );
-    //app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-    app.listen(port, () => { console.log(`server started`) })
-
+    app.listen(port, () => { console.log(`server started on`) })
 }
 const initRouters = () => {
-
     app.get('/', (req, res) => {
-        console.log(req)
-        res.send('Hello it\' Genshin api');
-        generateSwagger(req).then(async () => {
+        res.send('Hello it\'s Genshin api');
+        generateSwagger(req.get('host')).then(() => {
             const swaggerDoc = JSON.parse(readFile('./src/swagger/swagger.json', "utf8"));
             app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
-
         })
     })
     app.get('/characters', getAllCharacters);
