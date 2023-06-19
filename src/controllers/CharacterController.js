@@ -61,13 +61,13 @@ const CharacterController = {
                     model: Character,
                     populate: [
                         {
-                            path: 'handAbility', model: Ability, transform:(doc)=>doc??""
+                            path: 'handAbility', model: Ability, transform:(doc)=>doc??null
                         },
                         {
-                            path: 'elementAbility', model: Ability, transform:(doc)=>doc??""
+                            path: 'elementAbility', model: Ability, transform:(doc)=>doc??null
                         },
                         {
-                            path: 'burstAbility', model: Ability, transform:(doc)=>doc??""
+                            path: 'burstAbility', model: Ability, transform:(doc)=>doc??null
                         },
                     ]
                 });
